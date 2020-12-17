@@ -10,7 +10,7 @@ export default class Home extends React.Component {
     this.state = {
       buttons: [],
       wins: 0,
-      screen: 2,
+      screen: 0,
     }
   }
 
