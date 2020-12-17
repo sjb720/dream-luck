@@ -1,65 +1,103 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import React, { Component } from 'react';
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+export default class Home extends React.Component {
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+  constructor(props) {
+    super(props)
+    this.state = {
+      buttons: [],
+      wins: 0,
+      screen: 2,
+    }
+  }
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+  componentDidMount() {
+    this.cheats = false;
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+    var foo = new Array(1638);
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+    for (var i = 0; i < 1638; i++)
+      foo[i] = i;
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+    this.correct = Math.floor(Math.random() * 1638);
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+    this.setState({ buttons: foo })
+  }
+
+  correctButton() {
+    
+
+    if (this.state.wins + 1 == 4) {
+      this.setState({ screen: 2 })
+      this.setState({ wins: 0 })
+      return;
+    }
+    this.setState({ wins: this.state.wins + 1 })
+
+    this.correct = Math.floor(Math.random() * 1638);
+  }
+
+  wrongButton() {
+    this.setState({ wins: 0 })
+    this.setState({ screen: 1 })
+
+    this.correct = Math.floor(Math.random() * 1638);
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.screen == 0 &&
+          <div>
+            <div style={{ textAlign: "center", fontSize: 32 }}>Do you have dream luck?</div>
+            <div style={{ textAlign: "center" }}>All you have to do is choose the right button 4 times in a row! It's that easy.</div>
+
+            <div style={{ fontSize: 30, height: 50 }}>
+              <div style={{ float: "left" }}>Counter: {this.state.wins}</div>
+              <div style={{ float: "right" }}>Luck Meter: 1/{Math.pow(1638, this.state.wins)}</div>
+            </div>
+            <div style={{ fontSize: 0, textAlign: "center" }}>
+              {this.state.buttons.map((id) =>
+                <div class="butt" onClick={() => (this.correct == id ? this.correctButton() : this.wrongButton())}
+                  style={{ width: 20, height: 20, cursor: "pointer", display: "inline-block", margin: 1, padding: 0, backgroundColor: (this.cheats == true ? (this.correct == id ? "green" : "black") : "") }}></div>)
+              }
+            </div>
+          </div>
+        }
+
+        {this.state.screen == 1 &&
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 50, fontWeight: "bold" }}>You lost.</div>
+            <div style={{ fontSize: 32 }}>Don't feel too bad. here's a fun fact to cheer you up!</div>
+            <div style={{ fontSize: 32, fontStyle: "italic" }}>If the average person played this game once every second it would take them about 228,310 years to win! <span style={{ color: "green", fontWeight: "bold" }}>Keep trying you got this!</span></div>
+            <button style={{ fontSize: 70, margin: 50, padding: 20, cursor: "pointer" }} onClick={() => this.setState({ screen: 0 })}>Play again!</button>
+          </div>
+        }
+
+        {this.state.screen == 2 &&
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 50, fontWeight: "bold" }}>OMG YOU DID IT!!!11!11!.</div>
+            <div style={{ fontSize: 32 }}>Can't believe you're seeing this screen! The odds of you getting here are about 1 in ~7.19 trillion per attempt.</div>
+            <div style={{ fontSize: 32, fontStyle: "italic" }}>I guess the only real explanation is that you cheated.</div>
+            <div style={{ fontSize: 20, fontStyle: "italic" }}>And that's kinda the point. <span style={{ color: "green", fontWeight: "bold" }}>right?</span></div>
+            <button style={{ fontSize: 40, margin: 50, padding: 20, cursor: "pointer" }} onClick={() => this.setState({ screen: 0 })}>Do the impossible again?</button>
+          </div>
+        }
+
+        <style>{`
+
+        .butt{
+          background-color: grey;
+        }
+
+        .butt:hover{
+          background-color: #aaa;
+        }
+    `}</style>
+      </div>
+    )
+  }
 }
