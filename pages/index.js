@@ -73,8 +73,8 @@ export default class Home extends React.Component {
             <div style={{ textAlign: "center", fontSize: 32 }}>Do you have dream luck?</div>
             <div style={{ textAlign: "center" }}>All you have to do is choose the right button 4 times in a row! It's that easy.</div>
             <div style={{ fontSize: 30, height: 35 }}>
-              <div style={{ float: "left" }}>Win counter: {this.state.wins}</div>
-              <div style={{ float: "right" }}>Attempt Luck Meter: 1/{Math.pow(1638, this.state.wins)}</div>
+              <div style={{ float: "left" }}>Wins: {this.state.wins}</div>
+              <div style={{ float: "right" }}>Luck: 1/{Math.pow(1638, this.state.wins)}</div>
             </div>
             <div style={{ fontSize: 30, height: 50, textAlign: "center" }}>Attempts: {this.state.attempts}</div>
             <div style={{ fontSize: 0, textAlign: "center" }}>
