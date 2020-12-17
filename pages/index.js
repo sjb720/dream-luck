@@ -50,6 +50,10 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
+        <Head>
+          <title>Dream luck</title>
+        </Head>
+
         {this.state.screen == 0 &&
           <div>
             <div style={{ textAlign: "center", fontSize: 32 }}>Do you have dream luck?</div>
