@@ -9,6 +9,7 @@ export default class Home extends React.Component {
     super(props)
     this.state = {
       buttons: [],
+      attempts: 0,
       wins: 0,
       screen: 0,
     }
@@ -16,6 +17,12 @@ export default class Home extends React.Component {
 
   componentDidMount() {
     this.cheats = false;
+
+    if (isNaN(parseInt(window.localStorage.getItem("attempts")))) {
+      window.localStorage.setItem("attempts",0)
+    }
+
+    this.setState({ attempts: parseInt(window.localStorage.getItem("attempts")) })
 
     var foo = new Array(1638);
 
@@ -28,7 +35,10 @@ export default class Home extends React.Component {
   }
 
   correctButton() {
-    
+    window.localStorage.setItem("attempts", parseInt(window.localStorage.getItem("attempts")) + 1)
+    this.setState({ attempts: parseInt(window.localStorage.getItem("attempts")) })
+
+
 
     if (this.state.wins + 1 == 4) {
       this.setState({ screen: 2 })
@@ -41,6 +51,10 @@ export default class Home extends React.Component {
   }
 
   wrongButton() {
+    window.localStorage.setItem("attempts", parseInt(window.localStorage.getItem("attempts")) + 1)
+    this.setState({ attempts: parseInt(window.localStorage.getItem("attempts")) })
+
+
     this.setState({ wins: 0 })
     this.setState({ screen: 1 })
 
@@ -58,11 +72,11 @@ export default class Home extends React.Component {
           <div>
             <div style={{ textAlign: "center", fontSize: 32 }}>Do you have dream luck?</div>
             <div style={{ textAlign: "center" }}>All you have to do is choose the right button 4 times in a row! It's that easy.</div>
-
-            <div style={{ fontSize: 30, height: 50 }}>
-              <div style={{ float: "left" }}>Counter: {this.state.wins}</div>
-              <div style={{ float: "right" }}>Luck Meter: 1/{Math.pow(1638, this.state.wins)}</div>
+            <div style={{ fontSize: 30, height: 35 }}>
+              <div style={{ float: "left" }}>Win counter: {this.state.wins}</div>
+              <div style={{ float: "right" }}>Attempt Luck Meter: 1/{Math.pow(1638, this.state.wins)}</div>
             </div>
+            <div style={{ fontSize: 30, height: 50, textAlign: "center" }}>Attempts: {this.state.attempts}</div>
             <div style={{ fontSize: 0, textAlign: "center" }}>
               {this.state.buttons.map((id) =>
                 <div class="butt" onClick={() => (this.correct == id ? this.correctButton() : this.wrongButton())}
